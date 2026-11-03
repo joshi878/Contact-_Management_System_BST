@@ -1,209 +1,193 @@
-class Node {
-    constructor(id, name, phone, email, address) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.left = null;
-        this.right = null;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-class ContactBST {
-    constructor() {
-        this.root = null;
-    }
-
-    insert(root, node) {
-        if (root === null) return node;
-
-        if (node.id < root.id) {
-            root.left = this.insert(root.left, node);
-        } else {
-            root.right = this.insert(root.right, node);
-        }
-
-        return root;
-    }
-
-    search(root, id) {
-        if (root === null || root.id === id) return root;
-
-        if (id < root.id) {
-            return this.search(root.left, id);
-        }
-
-        return this.search(root.right, id);
-    }
-
-    minimum(root) {
-        if (!root) return null;
-        while (root.left !== null) root = root.left;
-        return root;
-    }
-
-    maximum(root) {
-        if (!root) return null;
-        while (root.right !== null) root = root.right;
-        return root;
-    }
-
-    delete(root, id) {
-        if (root === null) return null;
-
-        if (id < root.id) {
-            root.left = this.delete(root.left, id);
-        } else if (id > root.id) {
-            root.right = this.delete(root.right, id);
-        } else {
-            if (root.left === null) return root.right;
-            if (root.right === null) return root.left;
-
-            const successor = this.minimum(root.right);
-
-            root.id = successor.id;
-            root.name = successor.name;
-            root.phone = successor.phone;
-            root.email = successor.email;
-            root.address = successor.address;
-
-            root.right = this.delete(root.right, successor.id);
-        }
-
-        return root;
-    }
-
-    inorder(root, result = []) {
-        if (root !== null) {
-            this.inorder(root.left, result);
-            result.push(root);
-            this.inorder(root.right, result);
-        }
-        return result;
-    }
+body {
+    background: #f0f6ff;
+    color: #243447;
+    min-height: 100vh;
 }
 
-const bst = new ContactBST();
+/* Header */
 
-function addContact() {
-    const id = Number(document.getElementById("contactId").value);
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const address = document.getElementById("address").value.trim();
-
-    if (!Number.isSafeInteger(id) || id <= 0 || !name || !phone || !email || !address) {
-        alert("Please enter a valid Contact ID and fill all fields.");
-        return;
-    }
-
-    if (bst.search(bst.root, id)) {
-        alert("Contact ID already exists!");
-        return;
-    }
-
-    const node = new Node(id, name, phone, email, address);
-    bst.root = bst.insert(bst.root, node);
-
-    alert("Contact added successfully!");
-
-    document.querySelectorAll("input, textarea").forEach(input => input.value = "");
-
-    updateCount();
-    displayContacts();
+header {
+    background: linear-gradient(135deg, #1565c0, #42a5f5);
+    color: white;
+    text-align: center;
+    padding: 35px 15px;
+    box-shadow: 0 4px 15px rgba(21, 101, 192, 0.2);
 }
 
-function searchContact() {
-    const id = Number(document.getElementById("searchId").value);
+header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
 
-    if (!Number.isSafeInteger(id) || id <= 0) {
-        alert("Enter a valid Contact ID.");
-        return;
+header p {
+    font-size: 15px;
+    color: #e3f2fd;
+}
+
+/* Main Container */
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* Cards */
+
+.card {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(21, 101, 192, 0.10);
+    border-top: 4px solid #2196f3;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(21, 101, 192, 0.17);
+}
+
+.card h2 {
+    color: #1565c0;
+    font-size: 21px;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+
+input, textarea {
+    width: 100%;
+    padding: 13px 15px;
+    margin-bottom: 14px;
+    border: 1.5px solid #d1e3f8;
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+    background: #f8fbff;
+    color: #243447;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #2196f3;
+    background: #ffffff;
+    box-shadow: 0 0 7px rgba(33, 150, 243, 0.15);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+
+button {
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 5px 4px 5px 0;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(21, 101, 192, 0.25);
+}
+
+/* Search Results */
+
+#searchResult {
+    margin-top: 18px;
+    color: #1565c0;
+    line-height: 1.8;
+}
+
+/* Contact List */
+
+#contactList {
+    margin-top: 18px;
+    line-height: 1.8;
+}
+
+.contact {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 9px;
+    margin-bottom: 12px;
+    border-left: 4px solid #2196f3;
+    overflow-wrap: anywhere;
+}
+
+.contact b {
+    color: #1565c0;
+}
+
+/* BST Information */
+
+#totalContacts {
+    background: #e3f2fd;
+    padding: 12px;
+    border-radius: 8px;
+    color: #1565c0;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+/* Footer */
+
+footer {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 22px;
+    margin-top: 40px;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 23px;
     }
 
-    const contact = bst.search(bst.root, id);
-    const result = document.getElementById("searchResult");
-
-    if (contact) {
-        result.innerHTML = `
-            <div class="contact">
-                <b>Name:</b> ${escapeHTML(contact.name)}<br>
-                <b>Phone:</b> ${escapeHTML(contact.phone)}<br>
-                <b>Email:</b> ${escapeHTML(contact.email)}<br>
-                <b>Address:</b> ${escapeHTML(contact.address)}
-            </div>`;
-    } else {
-        result.textContent = "Contact not found!";
-    }
-}
-
-function deleteContact() {
-    const id = Number(document.getElementById("deleteId").value);
-
-    if (!Number.isSafeInteger(id) || id <= 0) {
-        alert("Enter a valid Contact ID.");
-        return;
+    .container {
+        width: 94%;
+        margin: 20px auto;
+        gap: 18px;
     }
 
-    if (!bst.search(bst.root, id)) {
-        alert("Contact not found!");
-        return;
+    .card {
+        padding: 20px;
     }
 
-    bst.root = bst.delete(bst.root, id);
-
-    alert("Contact deleted successfully!");
-    document.getElementById("deleteId").value = "";
-
-    updateCount();
-    displayContacts();
-}
-
-function displayContacts() {
-    const contacts = bst.inorder(bst.root);
-    const list = document.getElementById("contactList");
-
-    if (contacts.length === 0) {
-        list.textContent = "No contacts available.";
-        return;
+    .card h2 {
+        font-size: 19px;
     }
 
-    list.innerHTML = contacts.map(contact => `
-        <div class="contact">
-            <b>ID:</b> ${contact.id}<br>
-            <b>Name:</b> ${escapeHTML(contact.name)}<br>
-            <b>Phone:</b> ${escapeHTML(contact.phone)}<br>
-            <b>Email:</b> ${escapeHTML(contact.email)}<br>
-            <b>Address:</b> ${escapeHTML(contact.address)}
-        </div>
-    `).join("");
-}
-
-function findMinimum() {
-    const contact = bst.minimum(bst.root);
-
-    alert(contact ? "Minimum Contact ID: " + contact.id : "No contacts available.");
-}
-
-function findMaximum() {
-    const contact = bst.maximum(bst.root);
-
-    alert(contact ? "Maximum Contact ID: " + contact.id : "No contacts available.");
-}
-
-function updateCount() {
-    const count = bst.inorder(bst.root).length;
-    document.getElementById("totalContacts").textContent =
-        "Total Contacts: " + count;
-}
-
-function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    })[char]);
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
 }
