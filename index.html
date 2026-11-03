@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BST Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>BST SYSTEM</h2>
+
+        <button onclick="showPage('dashboard')">Dashboard</button>
+        <button onclick="showPage('add')">Add Student</button>
+        <button onclick="showPage('search')">Search Student</button>
+        <button onclick="showPage('delete')">Delete Student</button>
+        <button onclick="showPage('view')">View Students</button>
+        <button onclick="showPage('tree')">BST Visualization</button>
+    </div>
+
+    <div class="main">
+
+        <header>
+            <h1>Student Management Dashboard</h1>
+            <p>Binary Search Tree Based Application</p>
+        </header>
+
+        <section id="dashboard" class="page">
+            <h2>Welcome!</h2>
+            <div class="card">
+                <h3>Total Students</h3>
+                <h1 id="totalStudents">0</h1>
+            </div>
+            <p>Manage student records efficiently using BST.</p>
+        </section>
+
+        <section id="add" class="page">
+            <h2>Add Student</h2>
+            <input type="number" id="studentId" placeholder="Student ID">
+            <input type="text" id="studentName" placeholder="Student Name">
+            <input type="number" id="studentMarks" placeholder="Marks">
+            <button onclick="addStudent()">Add Student</button>
+        </section>
+
+        <section id="search" class="page">
+            <h2>Search Student</h2>
+            <input type="number" id="searchId" placeholder="Enter Student ID">
+            <button onclick="searchStudent()">Search</button>
+            <div id="searchResult"></div>
+        </section>
+
+        <section id="delete" class="page">
+            <h2>Delete Student</h2>
+            <input type="number" id="deleteId" placeholder="Enter Student ID">
+            <button onclick="deleteStudent()">Delete</button>
+        </section>
+
+        <section id="view" class="page">
+            <h2>All Student Records</h2>
+            <div id="studentList"></div>
+        </section>
+
+        <section id="tree" class="page">
+            <h2>Binary Search Tree</h2>
+            <div id="treeView"></div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
