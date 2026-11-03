@@ -1,174 +1,209 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+class Node {
+    constructor(id, name, phone, email, address) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.left = null;
+        this.right = null;
+    }
 }
 
-body {
-    display: flex;
-    background: #f1f4f9;
-}
-
-/* Sidebar */
-
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background: #1e3a5f;
-    padding: 25px 15px;
-    position: fixed;
-}
-
-.sidebar h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.sidebar button {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    margin: 12px 0;
-    border: none;
-    border-radius: 8px;
-    background: #31577e;
-    color: white;
-    font-size: 15px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.sidebar button:hover {
-    background: #4b83b5;
-}
-
-/* Main Section */
-
-.main {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding: 30px;
-}
-
-header {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-header h1 {
-    color: #1e3a5f;
-}
-
-header p {
-    color: #777;
-    margin-top: 8px;
-}
-
-/* Pages */
-
-.page {
-    display: none;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    min-height: 300px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-}
-
-#dashboard {
-    display: block;
-}
-
-.page h2 {
-    color: #1e3a5f;
-    margin-bottom: 25px;
-}
-
-/* Student Card */
-
-.card {
-    background: #e5efff;
-    padding: 25px;
-    width: 250px;
-    border-radius: 12px;
-    margin: 20px 0;
-    border-left: 5px solid #31577e;
-}
-
-.card h3 {
-    color: #31577e;
-}
-
-.card h1 {
-    font-size: 40px;
-    margin-top: 15px;
-    color: #1e3a5f;
-}
-
-/* Input Fields */
-
-input {
-    display: block;
-    width: 300px;
-    padding: 13px;
-    margin: 15px 0;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    outline: none;
-}
-
-input:focus {
-    border-color: #31577e;
-}
-
-/* Buttons */
-
-.main button {
-    padding: 12px 22px;
-    background: #31577e;
-    color: white;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-}
-
-.main button:hover {
-    background: #1e3a5f;
-}
-
-/* Results */
-
-#searchResult,
-#studentList,
-#treeView {
-    margin-top: 25px;
-    line-height: 2;
-    color: #333;
-}
-
-/* Mobile View */
-
-@media(max-width: 700px) {
-    .sidebar {
-        width: 160px;
+class ContactBST {
+    constructor() {
+        this.root = null;
     }
 
-    .main {
-        margin-left: 160px;
-        width: calc(100% - 160px);
-        padding: 15px;
+    insert(root, node) {
+        if (root === null) return node;
+
+        if (node.id < root.id) {
+            root.left = this.insert(root.left, node);
+        } else {
+            root.right = this.insert(root.right, node);
+        }
+
+        return root;
     }
 
-    input {
-        width: 100%;
+    search(root, id) {
+        if (root === null || root.id === id) return root;
+
+        if (id < root.id) {
+            return this.search(root.left, id);
+        }
+
+        return this.search(root.right, id);
     }
 
-    header h1 {
-        font-size: 20px;
+    minimum(root) {
+        if (!root) return null;
+        while (root.left !== null) root = root.left;
+        return root;
     }
+
+    maximum(root) {
+        if (!root) return null;
+        while (root.right !== null) root = root.right;
+        return root;
+    }
+
+    delete(root, id) {
+        if (root === null) return null;
+
+        if (id < root.id) {
+            root.left = this.delete(root.left, id);
+        } else if (id > root.id) {
+            root.right = this.delete(root.right, id);
+        } else {
+            if (root.left === null) return root.right;
+            if (root.right === null) return root.left;
+
+            const successor = this.minimum(root.right);
+
+            root.id = successor.id;
+            root.name = successor.name;
+            root.phone = successor.phone;
+            root.email = successor.email;
+            root.address = successor.address;
+
+            root.right = this.delete(root.right, successor.id);
+        }
+
+        return root;
+    }
+
+    inorder(root, result = []) {
+        if (root !== null) {
+            this.inorder(root.left, result);
+            result.push(root);
+            this.inorder(root.right, result);
+        }
+        return result;
+    }
+}
+
+const bst = new ContactBST();
+
+function addContact() {
+    const id = Number(document.getElementById("contactId").value);
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const address = document.getElementById("address").value.trim();
+
+    if (!Number.isSafeInteger(id) || id <= 0 || !name || !phone || !email || !address) {
+        alert("Please enter a valid Contact ID and fill all fields.");
+        return;
+    }
+
+    if (bst.search(bst.root, id)) {
+        alert("Contact ID already exists!");
+        return;
+    }
+
+    const node = new Node(id, name, phone, email, address);
+    bst.root = bst.insert(bst.root, node);
+
+    alert("Contact added successfully!");
+
+    document.querySelectorAll("input, textarea").forEach(input => input.value = "");
+
+    updateCount();
+    displayContacts();
+}
+
+function searchContact() {
+    const id = Number(document.getElementById("searchId").value);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        alert("Enter a valid Contact ID.");
+        return;
+    }
+
+    const contact = bst.search(bst.root, id);
+    const result = document.getElementById("searchResult");
+
+    if (contact) {
+        result.innerHTML = `
+            <div class="contact">
+                <b>Name:</b> ${escapeHTML(contact.name)}<br>
+                <b>Phone:</b> ${escapeHTML(contact.phone)}<br>
+                <b>Email:</b> ${escapeHTML(contact.email)}<br>
+                <b>Address:</b> ${escapeHTML(contact.address)}
+            </div>`;
+    } else {
+        result.textContent = "Contact not found!";
+    }
+}
+
+function deleteContact() {
+    const id = Number(document.getElementById("deleteId").value);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        alert("Enter a valid Contact ID.");
+        return;
+    }
+
+    if (!bst.search(bst.root, id)) {
+        alert("Contact not found!");
+        return;
+    }
+
+    bst.root = bst.delete(bst.root, id);
+
+    alert("Contact deleted successfully!");
+    document.getElementById("deleteId").value = "";
+
+    updateCount();
+    displayContacts();
+}
+
+function displayContacts() {
+    const contacts = bst.inorder(bst.root);
+    const list = document.getElementById("contactList");
+
+    if (contacts.length === 0) {
+        list.textContent = "No contacts available.";
+        return;
+    }
+
+    list.innerHTML = contacts.map(contact => `
+        <div class="contact">
+            <b>ID:</b> ${contact.id}<br>
+            <b>Name:</b> ${escapeHTML(contact.name)}<br>
+            <b>Phone:</b> ${escapeHTML(contact.phone)}<br>
+            <b>Email:</b> ${escapeHTML(contact.email)}<br>
+            <b>Address:</b> ${escapeHTML(contact.address)}
+        </div>
+    `).join("");
+}
+
+function findMinimum() {
+    const contact = bst.minimum(bst.root);
+
+    alert(contact ? "Minimum Contact ID: " + contact.id : "No contacts available.");
+}
+
+function findMaximum() {
+    const contact = bst.maximum(bst.root);
+
+    alert(contact ? "Maximum Contact ID: " + contact.id : "No contacts available.");
+}
+
+function updateCount() {
+    const count = bst.inorder(bst.root).length;
+    document.getElementById("totalContacts").textContent =
+        "Total Contacts: " + count;
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
 }
