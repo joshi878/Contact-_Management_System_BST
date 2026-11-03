@@ -3,73 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BST Student Management System</title>
+    <title>Contact Management System using BST</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="sidebar">
-        <h2>BST SYSTEM</h2>
+<header>
+    <h1>Contact Management System</h1>
+    <p>Using Binary Search Tree (BST)</p>
+</header>
 
-        <button onclick="showPage('dashboard')">Dashboard</button>
-        <button onclick="showPage('add')">Add Student</button>
-        <button onclick="showPage('search')">Search Student</button>
-        <button onclick="showPage('delete')">Delete Student</button>
-        <button onclick="showPage('view')">View Students</button>
-        <button onclick="showPage('tree')">BST Visualization</button>
-    </div>
+<div class="container">
 
-    <div class="main">
+    <section class="card">
+        <h2>Add New Contact</h2>
 
-        <header>
-            <h1>Student Management Dashboard</h1>
-            <p>Binary Search Tree Based Application</p>
-        </header>
+        <input type="number" id="contactId" placeholder="Contact ID">
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="tel" id="phone" placeholder="Mobile Number">
+        <input type="email" id="email" placeholder="Email Address">
+        <textarea id="address" placeholder="Address"></textarea>
 
-        <section id="dashboard" class="page">
-            <h2>Welcome!</h2>
-            <div class="card">
-                <h3>Total Students</h3>
-                <h1 id="totalStudents">0</h1>
-            </div>
-            <p>Manage student records efficiently using BST.</p>
-        </section>
+        <button onclick="addContact()">Add Contact</button>
+    </section>
 
-        <section id="add" class="page">
-            <h2>Add Student</h2>
-            <input type="number" id="studentId" placeholder="Student ID">
-            <input type="text" id="studentName" placeholder="Student Name">
-            <input type="number" id="studentMarks" placeholder="Marks">
-            <button onclick="addStudent()">Add Student</button>
-        </section>
+    <section class="card">
+        <h2>Search Contact</h2>
+        <input type="number" id="searchId" placeholder="Enter Contact ID">
+        <button onclick="searchContact()">Search</button>
+        <div id="searchResult"></div>
+    </section>
 
-        <section id="search" class="page">
-            <h2>Search Student</h2>
-            <input type="number" id="searchId" placeholder="Enter Student ID">
-            <button onclick="searchStudent()">Search</button>
-            <div id="searchResult"></div>
-        </section>
+    <section class="card">
+        <h2>Delete Contact</h2>
+        <input type="number" id="deleteId" placeholder="Enter Contact ID">
+        <button onclick="deleteContact()">Delete Contact</button>
+    </section>
 
-        <section id="delete" class="page">
-            <h2>Delete Student</h2>
-            <input type="number" id="deleteId" placeholder="Enter Student ID">
-            <button onclick="deleteStudent()">Delete</button>
-        </section>
+    <section class="card">
+        <h2>All Contacts</h2>
+        <button onclick="displayContacts()">Display Contacts (Inorder)</button>
+        <button onclick="findMinimum()">Minimum ID</button>
+        <button onclick="findMaximum()">Maximum ID</button>
+        <div id="contactList"></div>
+    </section>
 
-        <section id="view" class="page">
-            <h2>All Student Records</h2>
-            <div id="studentList"></div>
-        </section>
+    <section class="card">
+        <h2>BST Information</h2>
+        <p>Data Structure: Binary Search Tree</p>
+        <p>Key: Contact ID</p>
+        <p>Traversal: Inorder Traversal</p>
+        <p id="totalContacts">Total Contacts: 0</p>
+    </section>
 
-        <section id="tree" class="page">
-            <h2>Binary Search Tree</h2>
-            <div id="treeView"></div>
-        </section>
+</div>
 
-    </div>
+<footer>
+    <p>Contact Management System | BST Mini Project</p>
+</footer>
 
-    <script src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
